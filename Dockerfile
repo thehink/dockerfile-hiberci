@@ -18,14 +18,14 @@ RUN \
 #   ./emsdk activate latest && \ 
 #   /bin/bash -c "source ~/emsdk-portable/emsdk_env.sh"
 
-# RUN \
-#   sudo apt-get -y -qq install build-essential cmake default-jre git-core && \
-#   cd ~/ && \
-#   git clone https://github.com/juj/emsdk.git && \
-#   cd ./emsdk && \
-#   ./emsdk install sdk-incoming-64bit binaryen-master-64bit && \
-#   ./emsdk activate sdk-incoming-64bit binaryen-master-64bit && \
-#   /bin/bash -c "source ~/emsdk/emsdk_env.sh"
+RUN \
+  sudo apt-get -y -qq install build-essential cmake default-jre git-core && \
+  cd ~/ && \
+  git clone https://github.com/juj/emsdk.git && \
+  cd ./emsdk && \
+  ./emsdk install sdk-incoming-64bit binaryen-master-64bit && \
+  ./emsdk activate sdk-incoming-64bit binaryen-master-64bit && \
+  /bin/bash -c "source ~/emsdk/emsdk_env.sh"
 
 # Install Rust
 RUN \
