@@ -47,11 +47,12 @@ RUN echo "deb http://http.debian.net/debian jessie-backports main" > /etc/apt/so
     && rm -rf /binaryen/src /binaryen/lib /binaryen/CMakeFiles \
     && for prog in em++ em-config emar emcc emconfigure emmake emranlib emrun emscons emcmake; do \
            ln -sf /emscripten/$prog /usr/local/bin; done \
-    && apt-get -y --force-yes --purge remove curl git-core build-essential gcc \
+    && apt-get -y --force-yes --purge remove curl git-core build-essential \  
     && apt-get -y clean \
     && apt-get -y autoclean \
     && apt-get -y autoremove \
     && echo "Installed ... testing"
+
 RUN emcc --version \
     && mkdir -p /tmp/emscripten_test && cd /tmp/emscripten_test \
     && printf '#include <iostream>\nint main(){std::cout<<"HELLO"<<std::endl;return 0;}' > test.cpp \
@@ -60,6 +61,7 @@ RUN emcc --version \
     && em++ -s WASM=1 test.cpp -o test.js && nodejs test.js \
     && cd / \
     && rm -rf /tmp/emscripten_test \
+    && cp /root/.emscripten /home/circleci \
     && echo "All done."
 
 WORKDIR /src
