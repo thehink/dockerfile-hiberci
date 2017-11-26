@@ -15,14 +15,16 @@ ENV EMCC_BINARYEN_VERSION 1.37.22
 
 USER root
 
+
+    # && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
+    # && apt-get install -y nodejs \
+
 WORKDIR /
 
 RUN echo "deb http://http.debian.net/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list \
     && apt-get update && apt-get install -y --no-install-recommends -t jessie-backports gnupg ca-certificates build-essential cmake curl git-core openjdk-8-jre-headless ca-certificates-java python \
     && apt-mark hold openjdk-8-jre-headless \
     && apt-mark hold make \
-    # && curl -sL https://deb.nodesource.com/setup_8.x | bash - \
-    # && apt-get install -y nodejs \
     && curl https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz > emsdk-portable.tar.gz \
     && tar xzf emsdk-portable.tar.gz \
     && rm emsdk-portable.tar.gz \
@@ -61,8 +63,14 @@ RUN emcc --version \
     && em++ -s WASM=1 test.cpp -o test.js && nodejs test.js \
     && cd / \
     && rm -rf /tmp/emscripten_test \
-    && cp /root/.emscripten /home/circleci \
     && echo "All done."
+
+
+# CONF
+RUN cp /root/.emscripten /home/circleci
+
+ENV EMSCRIPTEN=/emscripten
+ENV EMSCRIPTEN_ROOT=/emscripten
 
 WORKDIR /src
 
